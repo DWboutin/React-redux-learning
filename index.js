@@ -1,6 +1,10 @@
-import server from "./src/server";
+require('babel/register')({
+  stage: 0
+});
 
-const APP_PORT = 3000;
+var server = require("./src/server");
+
+var APP_PORT = 3000;
 
 server.listen(APP_PORT, function(e){
   if(e){
