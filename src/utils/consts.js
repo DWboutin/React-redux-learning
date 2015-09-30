@@ -5,6 +5,7 @@ export default {
   APP_DOM_CONTAINER: 'react-view',
 
   ACTIONS: {
-    BUY_DRUG: 'BUY_DRUG'
+    BUY_DRUG: 'BUY_DRUG',
+    CHANGE_MONEY: 'CHANGE_MONEY'
   }
 }

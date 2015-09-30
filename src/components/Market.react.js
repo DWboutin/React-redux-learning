@@ -11,8 +11,8 @@ export default class Market extends React.Component {
         <tr key={drug.name}>
           <td>{drug.name}</td>
           <td>{drug.qty}</td>
-          <td>{drug.minPrice}</td>
-          <td><a className="waves-effect waves-light btn" data-index={ index } onClick={ this.handleBuyClick.bind(this) }>Buy</a></td>
+          <td>{drug.currentPrice}</td>
+          <td><a className="waves-effect waves-light btn" data-index={ index } data-price={drug.currentPrice} onClick={ this.handleBuyClick.bind(this) }>Buy</a></td>
         </tr>
       );
     });
@@ -20,9 +20,12 @@ export default class Market extends React.Component {
   }
 
   handleBuyClick(e) {
-    let { index } = e.target.dataset;
+    let { index, price } = e.target.dataset;
+    index = parseInt(index);
+    price = parseInt(price);
 
     this.props.buyDrug(index);
+    this.props.changeMoney(price);
   }
 
   render() {
