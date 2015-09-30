@@ -19,13 +19,17 @@ function startServer() {
   nodemon({
     // the script to run the app
     script: './index.js',
-    ext: 'js'
+    ext: 'js',
+    ignore: ['public/app.min.js']
   }).on('restart', function(){
     // when the app has restarted, run livereload.
-    gulp.src('./index.js')
-      .pipe(livereload())
-      .pipe(notify('Reloading page, please wait...'));
-  })
+    gulp.start('build', function() {
+      gulp.src('./index.js')
+        .pipe(livereload())
+        .pipe(notify('Server is now ready and rebuilded'));
+    });
+
+  });
 }
 
 gulp.task('build', function () {
@@ -34,7 +38,7 @@ gulp.task('build', function () {
     .bundle()
     .pipe(source('app.min.js'))
     .pipe(buffer())
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest('./src/public'));
 });
 

@@ -9,8 +9,8 @@ app.use('/assets', express.static(__dirname + '/public'));
 
 app.use((req, res) => {
   routing(req, res)
-  .then((reactComponent) => {
-      res.send('<!DOCTYPE html>\n' + React.renderToString(<Html component={reactComponent} />));
+  .then((routingReturn) => {
+      res.send('<!DOCTYPE html>\n' + React.renderToString(<Html component={routingReturn.component} initialState={routingReturn.initialState} />));
   });
 });
 
