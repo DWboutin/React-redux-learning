@@ -3,13 +3,13 @@ require('babel/register')({
 });
 
 var server = require("./src/server");
+var express = require("express");
+var CONSTS = require("./src/utils/consts");
 
-var APP_PORT = 3000;
-
-server.listen(APP_PORT, function(e){
+server.listen(CONSTS.APP_PORT, function(e){
   if(e){
     console.error(e);
   }
 
-  console.log('Server listening on ', APP_PORT);
+  console.log('Server listening on ', CONSTS.APP_PORT);
 });

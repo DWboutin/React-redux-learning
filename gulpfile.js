@@ -1,6 +1,3 @@
-require('babel/register')({
-  stage: 0
-});
 //http://egorsmirnov.me/2015/05/25/browserify-babelify-and-es6.html
 //http://jpsierens.com/tutorial-livereload-nodemon-gulp/
 var gulp = require("gulp");
@@ -38,7 +35,7 @@ gulp.task('build', function () {
     .pipe(source('app.min.js'))
     .pipe(buffer())
     .pipe(uglify())
-    .pipe(gulp.dest('public'));
+    .pipe(gulp.dest('./src/public'));
 });
 
 gulp.task('watch', function () {
