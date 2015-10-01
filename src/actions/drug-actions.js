@@ -1,9 +1,10 @@
 import { ACTIONS } from '../utils/consts';
 
-export function buyDrug(index, qty) {
+export function buyDrug(index, drug, qty) {
   return {
     type: ACTIONS.BUY_DRUG,
     index: index,
+    drug: drug,
     number: qty
   }
 }

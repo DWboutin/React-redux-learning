@@ -12,7 +12,7 @@ const PCP = "PCP";
 const Opium = "Opium";
 const Speed = "Speed";
 
-export default [
+let drugList = [
   {"name": Pot, "qty": 10, "minPrice": 10, "maxPrice": 100, "currentPrice": 100, "historyPrice": []},
   {"name": Hash, "qty": 10, "minPrice": 10, "maxPrice": 100, "currentPrice": 100, "historyPrice": []},
   {"name": Cocaine, "qty": 10, "minPrice": 10, "maxPrice": 100, "currentPrice": 100, "historyPrice": []},
@@ -27,3 +27,10 @@ export default [
   {"name": Opium, "qty": 10, "minPrice": 10, "maxPrice": 100, "currentPrice": 100, "historyPrice": []},
   {"name": Speed, "qty": 10, "minPrice": 10, "maxPrice": 100, "currentPrice": 100, "historyPrice": []}
 ];
+
+for(let i = 0; i < drugList.length; i++) {
+  let item = drugList[i];
+  item.currentPrice = Math.floor(Math.random() * (item.maxPrice - item.minPrice)) + item.minPrice;
+}
+
+export default drugList;

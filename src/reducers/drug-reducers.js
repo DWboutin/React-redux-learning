@@ -1,7 +1,15 @@
 import { ACTIONS } from '../utils/consts';
 import drugList from '../utils/drug-list';
 
-export function drugs(state = drugList, action = '') {
+let initialState;
+
+if(typeof process === 'object' && process + '' === '[object process]'){
+  initialState = drugList;
+}else{
+  initialState = window.__INITIAL_STATE__.drugs;
+}
+
+export function drugs(state = initialState, action = '') {
   switch (action.type) {
 
     case ACTIONS.BUY_DRUG:
