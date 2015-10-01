@@ -1,8 +1,8 @@
 import { ACTIONS } from '../utils/consts';
 
-export function changeMoney(amount) {
+export function changeCash(amount) {
   return {
-    type: ACTIONS.CHANGE_MONEY,
+    type: ACTIONS.CHANGE_CASH,
     amount: amount
   }
 }

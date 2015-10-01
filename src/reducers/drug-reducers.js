@@ -13,6 +13,15 @@ export function drugs(state = drugList, action = '') {
         ...state.slice(action.index + 1)
       ];
 
+    case ACTIONS.CHANGE_DRUG:
+      return [
+        ...state.slice(0, action.index),
+        Object.assign({}, state[action.index], {
+          qty: action.number
+        }),
+        ...state.slice(action.index + 1)
+      ];
+
     default:
       return state;
   }

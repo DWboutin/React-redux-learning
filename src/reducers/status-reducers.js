@@ -1,13 +1,13 @@
 import { ACTIONS } from '../utils/consts';
 
-var initialState = {money: 1000};
+var initialState = {cash: 2000};
 
 export function status(state = initialState, action = '') {
   switch (action.type) {
 
-    case ACTIONS.CHANGE_MONEY:
+    case ACTIONS.CHANGE_CASH:
       return Object.assign({}, state, {
-        money: state.money - action.amount
+        cash: action.amount
       });
 
     default:
