@@ -16,7 +16,7 @@ export function drugs(state = initialState, action = '') {
       return [
         ...state.slice(0, action.index),
         Object.assign({}, state[action.index], {
-          qty: state[action.index].qty - 1
+          qty: state[action.index].qty - action.number
         }),
         ...state.slice(action.index + 1)
       ];

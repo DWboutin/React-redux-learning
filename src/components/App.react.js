@@ -4,13 +4,51 @@ import { connect } from 'react-redux';
 import * as DrugActions from '../actions/drug-actions';
 import * as StatusActions from '../actions/status-actions';
 import * as BackpackActions from '../actions/backpack-actions';
+import * as ModalsActions from '../actions/modals-actions';
 import { isNumeric } from '../utils/helpers';
 
 import Market from './Market.react';
 import Status from './Status.react';
 import Backpack from './Backpack.react';
+import Modals from './Modals.react';
 
 class App extends React.Component {
+
+  changeModalInfos_buying(title, drug) {
+    const { dispatch, status } = this.props;
+    let description;
+    let placeholder;
+    let availableToBuy = Math.floor(status.cash / drug.currentPrice);
+
+    if(availableToBuy > drug.qty){
+      availableToBuy = drug.qty;
+    }
+
+    description = `${drug.name} is currently selling for $${drug.currentPrice}. With your available funds, you can buy ${availableToBuy} units.`;
+    placeholder = 'How many do you wish to buy?';
+
+    dispatch( ModalsActions.changeInfos(title, description, placeholder) );
+  }
+
+  changeModalInfos_selling(title, drug, price, qtybought) {
+    const { dispatch, status } = this.props;
+    let description;
+    let placeholder;
+    let profitDeficit;
+
+    if(price > drug.price){
+      profitDeficit = 'for a profit of $' + (price - drug.price);
+    }else if(drug.price > price){
+      profitDeficit = 'for a deficit of $' + (drug.price - price);
+    }else{
+      profitDeficit = 'to be even';
+    }
+
+    description = `${drug.name} is currently being bought for $${drug.currentPrice} per unit. You have ${qtybought} units to sell ${profitDeficit}.`;
+    placeholder = 'How many do you wish to sell?';
+
+    dispatch( ModalsActions.changeInfos(title, description, placeholder) );
+  }
 
   handleBuyDrug(e) {
     let { index, price, qtyavailable } = e.target.dataset;
@@ -30,17 +68,30 @@ class App extends React.Component {
         inBackpackQty = item.qty;
       }
     });
+    // changing modal infos
+    this.changeModalInfos_buying('Buy ' + drugs[index].name, drugs[index]);
 
-    if(status.cash >= price && qtyavailable > 0){
-      dispatch( DrugActions.buyDrug(index) );
-      dispatch( StatusActions.changeCash(cash - price) );
+    $('#modal').openModal({
+      complete: function(){
+        let $qtyInput = $('#quantity');
+        let numberToBuy = parseInt($qtyInput.val());
+        //reset quantity field
+        $qtyInput.val('');
+        // if number entered is valid
+        if(numberToBuy <= qtyavailable) {
+          if (status.cash >= price && qtyavailable > 0) {
+            dispatch(DrugActions.buyDrug(index, numberToBuy));
+            dispatch(StatusActions.changeCash(cash - (price * numberToBuy)));
 
-      if(!isNumeric(inBackpackIndex)){
-        dispatch( BackpackActions.addItem( drugs[index].name, 1, price ) );
-      }else{
-        dispatch( BackpackActions.changeItem( inBackpackIndex, drugs[index].name, inBackpackQty + 1, price ) );
+            if (!isNumeric(inBackpackIndex)) {
+              dispatch(BackpackActions.addItem(drugs[index].name, numberToBuy, price));
+            } else {
+              dispatch(BackpackActions.changeItem(inBackpackIndex, drugs[index].name, inBackpackQty + numberToBuy, price));
+            }
+          }
+        }
       }
-    }
+    });
   }
 
   handleSellDrug(e) {
@@ -58,20 +109,31 @@ class App extends React.Component {
         break;
       }
     }
+    // changing modal infos
+    this.changeModalInfos_selling('Sell ' + name, drugs[drugIndex], price, qtybought);
 
-    if(qtybought > 0){
-      dispatch( DrugActions.changeDrug(drugIndex, drugs[drugIndex].qty + 1) );
-      dispatch( StatusActions.changeCash(cash + price) );
-      if(qtybought > 1){
-        dispatch( BackpackActions.changeItem( index, drugs[index].name, qtybought - 1, price ) );
-      }else{
-        dispatch( BackpackActions.deleteItem( index ) );
+    $('#modal').openModal({
+      complete: function(){
+        let $qtyInput = $('#quantity');
+        let numberToSell = parseInt($qtyInput.val());
+        //reset quantity field
+        $qtyInput.val('');
+
+        if(qtybought > 0){
+          dispatch( DrugActions.changeDrug(drugIndex, drugs[drugIndex].qty + numberToSell) );
+          dispatch( StatusActions.changeCash(cash + (numberToSell * price)) );
+          if(qtybought > 1 && numberToSell != qtybought){
+            dispatch( BackpackActions.changeItem( index, drugs[index].name, qtybought - numberToSell, price ) );
+          }else{
+            dispatch( BackpackActions.deleteItem( index ) );
+          }
+        }
       }
-    }
+    });
   }
 
   render() {
-    const { dispatch, drugs, status, backpack } = this.props;
+    const { dispatch, drugs, status, backpack, modals } = this.props;
 
     return (
       <div>
@@ -94,10 +156,11 @@ class App extends React.Component {
             </div>
           </div>
         </div>
-          {this.props.children}
+        <Modals modals={modals} />
+        {this.props.children}
       </div>
     );
   }
 }
 
-export default connect(state => ({ drugs: state.drugs, status: state.status, backpack: state.backpack }))(App);
+export default connect(state => ({ drugs: state.drugs, status: state.status, backpack: state.backpack, modals: state.modals }))(App);

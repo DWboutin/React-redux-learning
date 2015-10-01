@@ -7,12 +7,19 @@ export default class Market extends React.Component {
 
   buildDrugsList() {
     let list = this.props.drugs.map((item, index) => {
+      let classNames = "waves-effect waves-light btn";
+      if(item.qty == 0){
+        classNames += " disabled";
+      }
+
       return (
         <tr key={item.name}>
           <td>{item.name}</td>
           <td>{item.qty}</td>
           <td>{item.currentPrice}</td>
-          <td><a className="waves-effect waves-light btn" data-index={ index } data-price={item.currentPrice} data-qtyavailable={item.qty} onClick={ this.props.handleBuyDrug }>Buy</a></td>
+          <td>
+            <a className={classNames} data-index={ index } data-price={item.currentPrice} data-qtyavailable={item.qty} onClick={ this.props.handleBuyDrug }>Buy</a>
+          </td>
         </tr>
       );
     });
