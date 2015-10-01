@@ -2,7 +2,7 @@ import { ACTIONS } from '../utils/consts';
 
 var initialState = {
   cash: 2500,
-  day: 0
+  day: 1
 };
 
 export function status(state = initialState, action = '') {

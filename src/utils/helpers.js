@@ -11,7 +11,7 @@ export function randomiseDrugList(list, day = 1){
     item.currentPrice = Math.floor(Math.random() * (item.maxPrice - item.minPrice)) + item.minPrice;
     item.qty = random10;
     item.historyPrice.push(item.currentPrice);
-    item.historyQty.push(item.qty);
-  }
+    item.historyQty.push(item.qty); 
+  } 
   return list;
 }
