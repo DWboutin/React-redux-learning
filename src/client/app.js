@@ -13,4 +13,4 @@ React.render((
   <Provider store={store}>
     {() => <Router history={createHistory()}>{routes}</Router>}
   </Provider>
-), document.getElementById( APP_DOM_CONTAINER ));
+), document.getElementById( APP_DOM_CONTAINER )); 

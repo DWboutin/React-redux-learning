@@ -119,13 +119,15 @@ class App extends React.Component {
         //reset quantity field
         $qtyInput.val('');
 
-        if(qtybought > 0){
-          dispatch( DrugActions.changeDrug(drugIndex, drugs[drugIndex].qty + numberToSell) );
-          dispatch( StatusActions.changeCash(cash + (numberToSell * price)) );
-          if(qtybought > 1 && numberToSell != qtybought){
-            dispatch( BackpackActions.changeItem( index, drugs[index].name, qtybought - numberToSell, price ) );
-          }else{
-            dispatch( BackpackActions.deleteItem( index ) );
+        if(numberToSell <= qtybought) {
+          if (qtybought > 0) {
+            dispatch(DrugActions.changeDrug(drugIndex, drugs[drugIndex].qty + numberToSell));
+            dispatch(StatusActions.changeCash(cash + (numberToSell * price)));
+            if (qtybought > 1 && numberToSell != qtybought) {
+              dispatch(BackpackActions.changeItem(index, drugs[index].name, qtybought - numberToSell, price));
+            } else {
+              dispatch(BackpackActions.deleteItem(index));
+            }
           }
         }
       }
