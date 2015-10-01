@@ -16,8 +16,9 @@ export function changeDrug(index, number) {
   }
 }
 
-export function changeListsPrices() {
+export function changeListsPrices(day) {
   return {
-    type: ACTIONS.CHANGE_LISTS_PRICES
+    type: ACTIONS.CHANGE_LISTS_PRICES,
+    day: day
   }
 }

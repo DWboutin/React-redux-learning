@@ -140,7 +140,7 @@ class App extends React.Component {
 
   handleStayHere(e) {
     const { dispatch, status } = this.props;
-    dispatch( DrugActions.changeListsPrices() );
+    dispatch( DrugActions.changeListsPrices(status.day) );
     dispatch( StatusActions.changeDay( status.day + 1 ) );
   }
 

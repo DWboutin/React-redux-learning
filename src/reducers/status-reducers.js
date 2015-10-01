@@ -1,7 +1,7 @@
 import { ACTIONS } from '../utils/consts';
 
 var initialState = {
-  cash: 2000,
+  cash: 2500,
   day: 0
 };
 

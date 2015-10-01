@@ -10,29 +10,32 @@ export default class Market extends React.Component {
       let classNames = "waves-effect waves-light btn";
       let iconName;
 
-      if(item.qty == 0){
-        classNames += " disabled";
-      }
+      if(item.qty > 0){
+        if(item.qty == 0) {
+          classNames += " disabled";
+        }
 
-      if(item.currentPrice > item.historyPrice[item.historyPrice.length - 2]){
-        iconName = 'trending_up';
-      }else if(item.currentPrice < item.historyPrice[item.historyPrice.length - 2]){
-        iconName = 'trending_down';
-      }else{
-        iconName = 'trending_flat';
-      }
 
-      return (
-        <tr key={item.name}>
-          <td><i className="material-icons">{iconName}</i></td>
-          <td>{item.name}</td>
-          <td>{item.qty}</td>
-          <td>{item.currentPrice}</td>
-          <td>
-            <a className={classNames} data-index={ index } data-price={item.currentPrice} data-qtyavailable={item.qty} onClick={ this.props.handleBuyDrug }>Buy</a>
-          </td>
-        </tr>
-      );
+        if(item.currentPrice > item.historyPrice[item.historyPrice.length - 2]){
+          iconName = 'trending_up';
+        }else if(item.currentPrice < item.historyPrice[item.historyPrice.length - 2]){
+          iconName = 'trending_down';
+        }else{
+          iconName = 'trending_flat';
+        }
+
+        return (
+          <tr key={item.name}>
+            <td><i className="material-icons">{iconName}</i></td>
+            <td>{item.name}</td>
+            <td>{item.qty}</td>
+            <td>{item.currentPrice}</td>
+            <td>
+              <a className={classNames} data-index={ index } data-price={item.currentPrice} data-qtyavailable={item.qty} onClick={ this.props.handleBuyDrug }>Buy</a>
+            </td>
+          </tr>
+        );
+      }
     });
     return list;
   }

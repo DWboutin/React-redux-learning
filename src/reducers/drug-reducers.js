@@ -32,7 +32,7 @@ export function drugs(state = initialState, action = '') {
       ];
 
     case ACTIONS.CHANGE_LISTS_PRICES:
-      let newList = randomiseDrugList(state);
+      let newList = randomiseDrugList(state, action.day);
       return [...newList];
 
     default:
