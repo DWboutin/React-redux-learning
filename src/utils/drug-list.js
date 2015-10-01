@@ -1,3 +1,5 @@
+import { randomiseDrugList } from './helpers';
+
 const Pot = "Pot";
 const Hash = "Hash";
 const Cocaine = "Cocaine";
@@ -28,9 +30,6 @@ let drugList = [
   {"name": Speed, "qty": 10, "minPrice": 10, "maxPrice": 100, "currentPrice": 100, "historyPrice": []}
 ];
 
-for(let i = 0; i < drugList.length; i++) {
-  let item = drugList[i];
-  item.currentPrice = Math.floor(Math.random() * (item.maxPrice - item.minPrice)) + item.minPrice;
-}
+drugList = randomiseDrugList(drugList);
 
 export default drugList;

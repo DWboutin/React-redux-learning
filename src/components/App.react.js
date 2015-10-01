@@ -11,6 +11,7 @@ import Market from './Market.react';
 import Status from './Status.react';
 import Backpack from './Backpack.react';
 import Modals from './Modals.react';
+import Tomorrow from './Tomorrow.react';
 
 class App extends React.Component {
 
@@ -36,10 +37,10 @@ class App extends React.Component {
     let placeholder;
     let profitDeficit;
 
-    if(price > drug.price){
-      profitDeficit = 'for a profit of $' + (price - drug.price);
-    }else if(drug.price > price){
-      profitDeficit = 'for a deficit of $' + (drug.price - price);
+    if(drug.currentPrice > price){
+      profitDeficit = 'for a profit of $' + (drug.currentPrice - price) + ' per unit';
+    }else if(price > drug.currentPrice){
+      profitDeficit = 'for a deficit of $' + (price - drug.currentPrice) + ' per unit';
     }else{
       profitDeficit = 'to be even';
     }
@@ -121,17 +122,26 @@ class App extends React.Component {
 
         if(numberToSell <= qtybought) {
           if (qtybought > 0) {
+
             dispatch(DrugActions.changeDrug(drugIndex, drugs[drugIndex].qty + numberToSell));
-            dispatch(StatusActions.changeCash(cash + (numberToSell * price)));
+            dispatch(StatusActions.changeCash(cash + (numberToSell * drugs[drugIndex].currentPrice)));
+
             if (qtybought > 1 && numberToSell != qtybought) {
               dispatch(BackpackActions.changeItem(index, drugs[index].name, qtybought - numberToSell, price));
             } else {
               dispatch(BackpackActions.deleteItem(index));
             }
+
           }
         }
       }
     });
+  }
+
+  handleStayHere(e) {
+    const { dispatch, status } = this.props;
+    dispatch( DrugActions.changeListsPrices() );
+    dispatch( StatusActions.changeDay( status.day + 1 ) );
   }
 
   render() {
@@ -144,6 +154,9 @@ class App extends React.Component {
         <div className="row">
           <div className="col s5">
             <Market drugs={drugs} handleBuyDrug={this.handleBuyDrug.bind(this)} />
+          </div>
+          <div className="col s3">
+            <Tomorrow onStayHere={this.handleStayHere.bind(this)} />
           </div>
           <div className="col s4">
             <div className="row">

@@ -15,3 +15,9 @@ export function changeDrug(index, number) {
     number: number
   }
 }
+
+export function changeListsPrices() {
+  return {
+    type: ACTIONS.CHANGE_LISTS_PRICES
+  }
+}

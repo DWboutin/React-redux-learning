@@ -1,5 +1,6 @@
 import { ACTIONS } from '../utils/consts';
 import drugList from '../utils/drug-list';
+import { randomiseDrugList } from '../utils/helpers';
 
 let initialState;
 
@@ -29,6 +30,10 @@ export function drugs(state = initialState, action = '') {
         }),
         ...state.slice(action.index + 1)
       ];
+
+    case ACTIONS.CHANGE_LISTS_PRICES:
+      let newList = randomiseDrugList(state);
+      return [...newList];
 
     default:
       return state;

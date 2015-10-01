@@ -1,6 +1,9 @@
 import { ACTIONS } from '../utils/consts';
 
-var initialState = {cash: 2000};
+var initialState = {
+  cash: 2000,
+  day: 0
+};
 
 export function status(state = initialState, action = '') {
   switch (action.type) {
@@ -8,6 +11,11 @@ export function status(state = initialState, action = '') {
     case ACTIONS.CHANGE_CASH:
       return Object.assign({}, state, {
         cash: action.amount
+      });
+
+    case ACTIONS.CHANGE_DAY:
+      return Object.assign({}, state, {
+        day: action.day
       });
 
     default:

@@ -6,3 +6,10 @@ export function changeCash(amount) {
     amount: amount
   }
 }
+
+export function changeDay(day) {
+  return {
+    type: ACTIONS.CHANGE_DAY,
+    day: day
+  };
+}
