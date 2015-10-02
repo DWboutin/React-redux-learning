@@ -5,7 +5,8 @@ import * as DrugActions from '../actions/drug-actions';
 import * as StatusActions from '../actions/status-actions';
 import * as BackpackActions from '../actions/backpack-actions';
 import * as ModalsActions from '../actions/modals-actions';
-import { isNumeric } from '../utils/helpers';
+import * as TomorrowActions from '../actions/tomorrow-actions';
+import { isNumeric, randomiseDrugList } from '../utils/helpers';
 
 import Market from './Market.react';
 import Status from './Status.react';
@@ -14,6 +15,11 @@ import Modals from './Modals.react';
 import Tomorrow from './Tomorrow.react';
 
 class App extends React.Component {
+
+  componentWillMount() {
+    const { dispatch, tomorrow, drugs } = this.props;
+    dispatch( TomorrowActions.buildTomorrowList([...drugs]) );
+  }
 
   changeModalInfos_buying(title, drug) {
     const { dispatch, status } = this.props;
@@ -142,13 +148,14 @@ class App extends React.Component {
   }
 
   handleStayHere(e) {
-    const { dispatch, status } = this.props;
-    dispatch( DrugActions.changeListsPrices(status.day + 1) );
+    const { dispatch, status, tomorrow, drugs } = this.props;
+    dispatch( DrugActions.changeWholeList(tomorrow.currentPlaceList) );
     dispatch( StatusActions.changeDay( status.day + 1 ) );
+    dispatch( TomorrowActions.buildTomorrowList([...drugs], status.day + 1) );
   }
 
   render() {
-    const { dispatch, drugs, status, backpack, modals } = this.props;
+    const { dispatch, drugs, status, backpack, modals, tomorrow } = this.props;
 
     return (
       <div>
@@ -181,4 +188,4 @@ class App extends React.Component {
   }
 }
 
-export default connect(state => ({ drugs: state.drugs, status: state.status, backpack: state.backpack, modals: state.modals }))(App);
+export default connect(state => ({ drugs: state.drugs, status: state.status, backpack: state.backpack, modals: state.modals, tomorrow: state.tomorrow }))(App);

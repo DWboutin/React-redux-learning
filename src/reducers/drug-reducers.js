@@ -31,8 +31,8 @@ export function drugs(state = initialState, action = '') {
         ...state.slice(action.index + 1)
       ];
 
-    case ACTIONS.CHANGE_LISTS_PRICES:
-      let newList = randomiseDrugList(state, action.day);
+    case ACTIONS.CHANGE_WHOLE_LIST:
+      let newList = randomiseDrugList([...action.list]);
       return [...newList];
 
     default:

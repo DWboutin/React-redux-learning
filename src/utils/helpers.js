@@ -3,7 +3,6 @@ export function isNumeric(n) {
 }
 
 export function randomiseDrugList(list, day = 0){
-  randomAlgo(day);
   for(let i = 0; i < list.length; i++) {
     let item = list[i];
     let historyQtylength = item.historyQty.length;
