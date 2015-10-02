@@ -110,37 +110,40 @@ class App extends React.Component {
         break;
       }
     }
-    // changing modal infos
-    this.changeModalInfos_selling('Sell ' + name, drugs[drugIndex], price, qtybought);
 
-    $('#modal').openModal({
-      complete: function(){
-        let $qtyInput = $('#quantity');
-        let numberToSell = parseInt($qtyInput.val());
-        //reset quantity field
-        $qtyInput.val('');
+    if(drugs[drugIndex].available == true) {
+      // changing modal infos
+      this.changeModalInfos_selling('Sell ' + name, drugs[drugIndex], price, qtybought);
 
-        if(numberToSell <= qtybought) {
-          if (qtybought > 0) {
+      $('#modal').openModal({
+        complete: function () {
+          let $qtyInput = $('#quantity');
+          let numberToSell = parseInt($qtyInput.val());
+          //reset quantity field
+          $qtyInput.val('');
 
-            dispatch(DrugActions.changeDrug(drugIndex, drugs[drugIndex].qty + numberToSell));
-            dispatch(StatusActions.changeCash(cash + (numberToSell * drugs[drugIndex].currentPrice)));
+          if (numberToSell <= qtybought) {
+            if (qtybought > 0) {
 
-            if (qtybought > 1 && numberToSell != qtybought) {
-              dispatch(BackpackActions.changeItem(index, drugs[index].name, qtybought - numberToSell, price));
-            } else {
-              dispatch(BackpackActions.deleteItem(index));
+              dispatch(DrugActions.changeDrug(drugIndex, drugs[drugIndex].qty + numberToSell));
+              dispatch(StatusActions.changeCash(cash + (numberToSell * drugs[drugIndex].currentPrice)));
+
+              if (qtybought > 1 && numberToSell != qtybought) {
+                dispatch(BackpackActions.changeItem(index, drugs[index].name, qtybought - numberToSell, price));
+              } else {
+                dispatch(BackpackActions.deleteItem(index));
+              }
+
             }
-
           }
         }
-      }
-    });
+      });
+    }
   }
 
   handleStayHere(e) {
     const { dispatch, status } = this.props;
-    dispatch( DrugActions.changeListsPrices(status.day) );
+    dispatch( DrugActions.changeListsPrices(status.day + 1) );
     dispatch( StatusActions.changeDay( status.day + 1 ) );
   }
 
@@ -166,7 +169,7 @@ class App extends React.Component {
             </div>
             <div className="row">
               <div className="col s12">
-                <Backpack backpack={backpack} handleSellDrug={this.handleSellDrug.bind(this)} />
+                <Backpack backpack={backpack} drugs={drugs} handleSellDrug={this.handleSellDrug.bind(this)} />
               </div>
             </div>
           </div>

@@ -2,19 +2,36 @@ import React from 'react';
 
 export default class Backpack extends React.Component {
 
+  findDrugWithSameName(name) {
+    let { drugs } = this.props;
+
+    for(let i = 0; i < drugs.length; i++) {
+      if(drugs[i].name === name){
+        return drugs[i];
+      }
+    }
+  }
+
   buildBackpackList() {
     let { backpack } = this.props;
-    let list = backpack.map((item, index) => {
+
+    return backpack.map((item, index) => {
+      let classNames = "waves-effect waves-light btn";
+      let drug = this.findDrugWithSameName(item.name);
+
+      if(drug.available === false){
+        classNames += " disabled";
+      }
+
       return (
         <tr key={"backpack_" + item.name + "_" + index}>
           <td>{item.name}</td>
           <td>{item.qty}</td>
           <td>{item.boughtPrice}</td>
-          <td><a className="waves-effect waves-light btn" data-index={ index } data-name={item.name} data-price={item.boughtPrice} data-qtybought={item.qty} onClick={ this.props.handleSellDrug }>Sell</a></td>
+          <td><a className={classNames} data-index={ index } data-name={item.name} data-price={item.boughtPrice} data-qtybought={item.qty} onClick={ this.props.handleSellDrug }>Sell</a></td>
         </tr>
       );
     });
-    return list;
   }
 
   render() {

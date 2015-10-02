@@ -10,8 +10,8 @@ export default class Market extends React.Component {
       let classNames = "waves-effect waves-light btn";
       let iconName;
 
-      if(item.qty > 0){
-        if(item.qty == 0) {
+      if(item.qty > 0 && item.available){
+        if(!item.available) {
           classNames += " disabled";
         }
 
