@@ -18,7 +18,7 @@ class App extends React.Component {
 
   componentWillMount() {
     const { dispatch, tomorrow, drugs } = this.props;
-    dispatch( TomorrowActions.buildTomorrowList([...drugs]) );
+    dispatch( TomorrowActions.buildTomorrowList(drugs, 1) );
   }
 
   changeModalInfos_buying(title, drug) {
@@ -151,7 +151,7 @@ class App extends React.Component {
     const { dispatch, status, tomorrow, drugs } = this.props;
     dispatch( DrugActions.changeWholeList(tomorrow.currentPlaceList) );
     dispatch( StatusActions.changeDay( status.day + 1 ) );
-    dispatch( TomorrowActions.buildTomorrowList([...drugs], status.day + 1) );
+    dispatch( TomorrowActions.buildTomorrowList(drugs, status.day + 1) );
   }
 
   render() {

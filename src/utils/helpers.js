@@ -3,19 +3,13 @@ export function isNumeric(n) {
 }
 
 export function randomiseDrugList(list, day = 0){
-  for(let i = 0; i < list.length; i++) {
-    let item = list[i];
-    let historyQtylength = item.historyQty.length;
-    let random = randomAlgo(day);
-
-    item.currentPrice = Math.floor(Math.random() * (item.maxPrice - item.minPrice)) + item.minPrice;
-    item.qty = random;
-    item.available = !(day == 0 || item.qty < 1);
-
-    item.historyPrice.push(item.currentPrice);
-    item.historyQty.push(item.qty);
-  } 
-  return list;
+  return list.map( item => Object.assign({}, item, {
+    qty: randomAlgo(day),
+    currentPrice: Math.floor(Math.random() * (item.maxPrice - item.minPrice)) + item.minPrice,
+    available: !(day == 0 || item.qty < 1),
+    historyPrice: [...item.historyPrice, item.currentPrice],
+    historyQty: [...item.historyQty, item.qty]
+  }));
 }
 
 function randomAlgo(day) {

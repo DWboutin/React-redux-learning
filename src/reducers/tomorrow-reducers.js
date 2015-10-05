@@ -9,7 +9,8 @@ export function tomorrow(state = initialState, action = '') {
   switch (action.type) {
 
     case ACTIONS.BUILD_TOMORROW_LIST:
-      let newList = Object.assign({}, state, {currentPlaceList: randomiseDrugList(action.list, action.day)});
+      let randomactionList = randomiseDrugList([...action.list], action.day);
+      let newList = Object.assign({}, state, { currentPlaceList: randomactionList });
       console.log(newList);
       return newList;
 

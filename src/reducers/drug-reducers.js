@@ -32,8 +32,7 @@ export function drugs(state = initialState, action = '') {
       ];
 
     case ACTIONS.CHANGE_WHOLE_LIST:
-      let newList = randomiseDrugList([...action.list]);
-      return [...newList];
+      return [...action.list];
 
     default:
       return state;
