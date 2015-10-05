@@ -30,6 +30,6 @@ let drugList = [
   {"name": Speed, "qty": 0, "minPrice": 1, "maxPrice": 80, "currentPrice": 0, "historyPrice": [], "historyQty": [], "available": false}
 ];
 
-drugList = randomiseDrugList(drugList);
- 
+drugList = randomiseDrugList(drugList, -1);
+
 export default drugList;

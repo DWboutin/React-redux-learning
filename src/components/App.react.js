@@ -6,6 +6,7 @@ import * as StatusActions from '../actions/status-actions';
 import * as BackpackActions from '../actions/backpack-actions';
 import * as ModalsActions from '../actions/modals-actions';
 import * as TomorrowActions from '../actions/tomorrow-actions';
+import * as InformationsActions from '../actions/informations-actions';
 import { isNumeric, randomiseDrugList } from '../utils/helpers';
 
 import Market from './Market.react';
@@ -17,8 +18,10 @@ import Tomorrow from './Tomorrow.react';
 class App extends React.Component {
 
   componentWillMount() {
-    const { dispatch, tomorrow, drugs } = this.props;
-    dispatch( TomorrowActions.buildTomorrowList(drugs, 1) );
+    const { dispatch, drugs, status } = this.props;
+    let randomList = randomiseDrugList(drugs, status.day);
+    dispatch( TomorrowActions.buildTomorrowList(randomList) );
+    dispatch( InformationsActions.buildTomorrowMessages(randomList) );
   }
 
   changeModalInfos_buying(title, drug) {
@@ -151,16 +154,25 @@ class App extends React.Component {
     const { dispatch, status, tomorrow, drugs } = this.props;
     dispatch( DrugActions.changeWholeList(tomorrow.currentPlaceList) );
     dispatch( StatusActions.changeDay( status.day + 1 ) );
-    dispatch( TomorrowActions.buildTomorrowList(drugs, status.day + 1) );
+
+    let tomorrowList = randomiseDrugList([...drugs], status.day + 1);
+
+    dispatch( TomorrowActions.buildTomorrowList(tomorrowList) );
+    dispatch( InformationsActions.buildTomorrowMessages(tomorrowList) );
   }
 
   render() {
-    const { dispatch, drugs, status, backpack, modals, tomorrow } = this.props;
+    const { dispatch, drugs, status, backpack, modals, informations } = this.props;
 
     return (
       <div>
         <h1>App</h1>
         <Link to='/'>App</Link>{' '}<Link to='/home'>Home</Link>
+        <div className="row">
+          <div className="col s5">
+            {informations.currentPlaceMessage.name + informations.currentPlaceMessage.message + informations.currentPlaceMessage.way}
+          </div>
+        </div>
         <div className="row">
           <div className="col s5">
             <Market drugs={drugs} handleBuyDrug={this.handleBuyDrug.bind(this)} />
@@ -188,4 +200,4 @@ class App extends React.Component {
   }
 }
 
-export default connect(state => ({ drugs: state.drugs, status: state.status, backpack: state.backpack, modals: state.modals, tomorrow: state.tomorrow }))(App);
+export default connect(state => ({ drugs: state.drugs, status: state.status, backpack: state.backpack, modals: state.modals, tomorrow: state.tomorrow, informations: state.informations }))(App);

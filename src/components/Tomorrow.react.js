@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class Tomorrow extends React.Component {
   render() {
-    let { onStayHere } = this.props;
+    let { onStayHere, day } = this.props;
 
     return (
       <div id="tomorow">
